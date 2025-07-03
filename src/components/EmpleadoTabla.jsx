@@ -1,4 +1,4 @@
-const EmpleadoTabla = ({ empleados, handleEditar, handleEliminar,handleVacaciones }) => {
+const EmpleadoTabla = ({ empleados, handleEditar, handleEliminar}) => {
   if (empleados.length === 0) {
     return <p>No hay empleados registrados.</p>;
   }

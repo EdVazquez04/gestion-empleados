@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import EmpleadoForm from "../components/EmpleadoForm";
 import EmpleadoTabla from "../components/EmpleadoTabla";
 import CalendarioCumpleaños from "../components/CalendarioCumpleaños";
@@ -113,6 +113,16 @@ const Empleados = () => {
     setEmpleadoSeleccionado(null);
   };
 
+  const exportarEmpleados = () => {
+    const data = JSON.stringify(empleados, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "empleados.json";
+    a.click();
+  };
+
   return (
     <div>
       <h1>Gestión de Empleados</h1>
@@ -143,6 +153,8 @@ const Empleados = () => {
       <h3>Calendario de Cumpleaños</h3>
 
       <CalendarioCumpleaños empleados={empleados} />
+
+      <button onClick={exportarEmpleados}>📤 Exportar empleados</button>
 
     </div>
   );
