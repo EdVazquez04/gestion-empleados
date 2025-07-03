@@ -1,23 +1,35 @@
-// enviarCumpleaños.js
 const fs = require("fs");
+const path = require("path");
 const nodemailer = require("nodemailer");
 
-// Leer empleados desde archivo JSON exportado
-const empleados = JSON.parse(fs.readFileSync("empleados.json", "utf8"));
+const empleadosPath = path.join(__dirname, "empleados.json");
+
+// Leer empleados
+const empleados = JSON.parse(fs.readFileSync(empleadosPath, "utf8"));
 
 // Fecha actual
 const hoy = new Date();
 const dia = hoy.getDate();
 const mes = hoy.getMonth() + 1;
+const fechaLog = hoy.toISOString().slice(0, 10);
 
-// Configura tu correo (usa contraseña de aplicación en Gmail)
+// Configura Nodemailer
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "lvazquez@dumaxst.com",
-    pass: "ygpx ctsf pofo fgsg"
+    pass: "ygpx ctsf pofo fgsg" 
   }
 });
+
+// Log de envíos
+const logPath = path.join(__dirname, `logs/envios-${fechaLog}.log`);
+fs.mkdirSync(path.dirname(logPath), { recursive: true });
+
+const log = (mensaje) => {
+  console.log(mensaje);
+  fs.appendFileSync(logPath, mensaje + "\n");
+};
 
 // Verifica y envía correos
 empleados.forEach(emp => {
@@ -32,9 +44,9 @@ empleados.forEach(emp => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error("❌ Error al enviar a", emp.nombre, ":", error.message);
+        log(`❌ Error al enviar a ${emp.nombre}: ${error.message}`);
       } else {
-        console.log(`✅ Correo enviado a ${emp.nombre}: ${info.response}`);
+        log(`✅ Correo enviado a ${emp.nombre}: ${info.response}`);
       }
     });
   }

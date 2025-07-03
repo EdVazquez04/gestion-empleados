@@ -1,9 +1,16 @@
 [
   {
+    "nombre": "Luis Eduardo",
+    "puesto": "Practicante",
+    "correo": "22610139@dumaxst.com",
+    "fechaNacimiento": "2004-07-03",
+    "id": 1751570814759
+  },
+  {
     "nombre": "Marco Antonio",
     "puesto": "Practicante",
     "correo": "mpescador@dumaxst.com",
-    "fechaNacimiento": "2004-07-03",
-    "id": 1751556343611
+    "fechaNacimiento": "2004-07-04",
+    "id": 1751570874621
   }
 ]

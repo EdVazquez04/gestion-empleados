@@ -26,9 +26,18 @@ const Empleados = () => {
     return data ? JSON.parse(data) : [];
   });
 
-  // Guardar en localStorage
   useEffect(() => {
     localStorage.setItem("empleados", JSON.stringify(empleados));
+
+    // Sincronizar con el servidor local
+    fetch("http://localhost:4000/sync-empleados", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(empleados),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("Sincronizado:", data.mensaje))
+      .catch((err) => console.error("Error al sincronizar empleados:", err));
   }, [empleados]);
 
   useEffect(() => {
@@ -113,16 +122,6 @@ const Empleados = () => {
     setEmpleadoSeleccionado(null);
   };
 
-  const exportarEmpleados = () => {
-    const data = JSON.stringify(empleados, null, 2);
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "empleados.json";
-    a.click();
-  };
-
   return (
     <div>
       <h1>Gestión de Empleados</h1>
@@ -153,9 +152,6 @@ const Empleados = () => {
       <h3>Calendario de Cumpleaños</h3>
 
       <CalendarioCumpleaños empleados={empleados} />
-
-      <button onClick={exportarEmpleados}>📤 Exportar empleados</button>
-
     </div>
   );
 };
